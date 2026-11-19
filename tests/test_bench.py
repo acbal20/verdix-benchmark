@@ -62,3 +62,29 @@ def test_lenguajes_soportados():
     for lang in ("c", "python", "javascript"):
         cmd = bench.bench_command(lang, "fib_iter", None)
         assert isinstance(cmd, list) and len(cmd) >= 2
+
+
+NUEVOS = ("sha256_32mb", "gzip_8mb", "json_parse", "regex_count", "mem_alloc", "pi_monte_carlo")
+
+
+def test_nuevas_categorias_configuradas():
+    for name in NUEVOS:
+        assert name in bench.BENCHMARKS
+        spec = bench.BENCHMARKS[name]
+        assert "langs" in spec and set(spec["langs"]) <= {"python", "javascript"}
+        assert spec["file"] is None, "las nuevas categorías generan su entrada de forma determinista"
+
+
+def test_nuevas_categorias_implementadas():
+    py = open(os.path.join(ROOT, "engine", "py", "algorithms.py"), encoding="utf-8").read()
+    js = open(os.path.join(ROOT, "engine", "js", "algorithms.js"), encoding="utf-8").read()
+    for name in NUEVOS:
+        assert f'"{name}"' in py, f"falta implementación Python de {name}"
+        assert f"'{name}'" in js, f"falta implementación JS de {name}"
+
+
+def test_resultados_recientes_incluyen_nuevas():
+    data = json.load(open(os.path.join(ROOT, "results", "latest.json"), encoding="utf-8"))
+    nombres = {r["benchmark"] for r in data["results"]}
+    for name in NUEVOS:
+        assert name in nombres, f"la última corrida no midió {name}"

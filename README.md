@@ -26,6 +26,19 @@ python3 -m pytest tests/ -q  # 7 pruebas
 
 ## Resultados medidos (19-nov-2026, CPU ociosa tras pausar NOX-1, Celeron 4205U · 2 núcleos · 3.7 GB)
 
+
+## Nuevas categorías (medidas en CPU ociosa, 19-nov-2026)
+| Categoría | JS (Node) | Python | Qué mide |
+|---|---|---|---|
+| SHA-256 32 MB | 249.0 ms | 428.2 ms | hash de datos deterministas |
+| gzip 8 MB (nivel 6) | 83.6 ms | 90.6 ms | compresión real |
+| Parseo 20k JSON | 37.8 ms | 67.5 ms | `JSON.parse` / `json.loads` |
+| Regex ~2 MB | 7.6 ms | 74.0 ms | conteo de coincidencias |
+| Memoria 64 MB | 42.8 ms | 47.7 ms | asignación + escritura dispersa |
+| Monte Carlo 500k | (ver dashboard) | 321.9 ms | π con semilla 42 |
+
+C no implementa estas seis: **se omiten, nunca se simula un resultado**.
+
 | Benchmark | C | JS (Node) | Python |
 |---|---|---|---|
 | quicksort 40k | 6.3 ms | 55.6 ms | 199.9 ms |

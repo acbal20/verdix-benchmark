@@ -1,5 +1,5 @@
 """VERDIX BENCHMARK — implementaciones Python puras (sin sort()/built-ins pesados)."""
-import sys, time
+import sys, time, re, random
 
 def quicksort(arr):
     if len(arr) <= 1: return arr
@@ -87,7 +87,27 @@ def sieve(n):
 def main():
     bench = sys.argv[1]
     t0 = time.perf_counter()
-    if bench in ("fib_rec", "fib_iter", "matrix", "sieve"):
+    if bench == "sha256_32mb":
+        import hashlib
+        data = bytes(((i * 31 + 7) % 256) for i in range(1 << 20)) * 32
+        hashlib.sha256(data).digest()
+    elif bench == "gzip_8mb":
+        import zlib
+        zlib.compress(bytes(range(256)) * 32768, 6)
+    elif bench == "json_parse":
+        import json
+        doc = json.dumps([{"id": i, "name": "verdix" + str(i), "ok": i % 2 == 0} for i in range(20000)])
+        json.loads(doc)
+    elif bench == "regex_count":
+        texto = "NEON Verdix 1234 xyz\n" * 100000
+        re.findall(r"[A-Z]{3,}\s\d+", texto)
+    elif bench == "mem_alloc":
+        buf = bytearray(64 << 20)
+        for i in range(0, len(buf), 4096): buf[i] = 1
+    elif bench == "pi_monte_carlo":
+        r = random.Random(42)
+        dentro = sum(1 for _ in range(500000) if r.random()**2 + r.random()**2 <= 1)
+    elif bench in ("fib_rec", "fib_iter", "matrix", "sieve"):
         if bench == "fib_rec": fib_rec(30)
         elif bench == "fib_iter": fib_iter(90)
         elif bench == "sieve": sieve(2000000)

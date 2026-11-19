@@ -39,6 +39,19 @@ BENCHMARKS = {
     "fib_iter":      {"file": None,         "size":    90, "runs": 5, "desc": "Fibonacci(90) iterativo"},
     "matrix":        {"file": None,         "size":   100, "runs": 5, "desc": "Multiplicación de matrices 100×100"},
     "sieve":         {"file": None,         "size": 2000000, "runs": 5, "desc": "Criba de Eratóstenes hasta 2.000.000"},
+    # Nuevas categorías: C no las implementa → se omiten (nunca se simula un resultado)
+    "sha256_32mb":   {"file": None, "size": 32, "runs": 3, "langs": ("python", "javascript"),
+                      "desc": "SHA-256 sobre 32 MB de datos deterministas"},
+    "gzip_8mb":      {"file": None, "size": 8, "runs": 3, "langs": ("python", "javascript"),
+                      "desc": "Compresión gzip nivel 6 de 8 MB"},
+    "json_parse":    {"file": None, "size": 20000, "runs": 3, "langs": ("python", "javascript"),
+                      "desc": "Parseo de 20.000 objetos JSON"},
+    "regex_count":   {"file": None, "size": 100000, "runs": 3, "langs": ("python", "javascript"),
+                      "desc": "Conteo de coincidencias regex en ~2 MB de texto"},
+    "mem_alloc":     {"file": None, "size": 64, "runs": 3, "langs": ("python", "javascript"),
+                      "desc": "Asignación y escritura dispersa de 64 MB"},
+    "pi_monte_carlo":{"file": None, "size": 500000, "runs": 3, "langs": ("python", "javascript"),
+                      "desc": "Pi por Monte Carlo con 500.000 puntos (semilla 42)"},
 }
 LANGUAGES = {
     "c":      {"version_cmd": ["gcc", "-dumpversion"], "label": "C (gcc -O2)"},
@@ -145,8 +158,10 @@ def bench_command(lang, name, input_file):
     raise ValueError(lang)
 
 
-def run_benchmark(name, runs=None, langs=("c", "python", "javascript")):
+def run_benchmark(name, runs=None, langs=None):
     spec = BENCHMARKS[name]
+    if langs is None:
+        langs = spec.get("langs", ("c", "python", "javascript"))
     ensure_inputs()
     if "c" in langs:
         compile_c()

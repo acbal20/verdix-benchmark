@@ -81,7 +81,31 @@ function sieve(n) {
 
 const bench = process.argv[2];
 const t0 = process.hrtime.bigint();
-if (bench === 'fib_rec') fibRec(30);
+if (bench === 'sha256_32mb') {
+  const crypto = require('crypto');
+  const one = Buffer.alloc(1 << 20);
+  for (let i = 0; i < one.length; i++) one[i] = (i * 31 + 7) % 256;
+  const data = Buffer.concat(Array(32).fill(one));
+  crypto.createHash('sha256').update(data).digest();
+} else if (bench === 'gzip_8mb') {
+  const zlib = require('zlib');
+  const block = Buffer.alloc(256); for (let i = 0; i < 256; i++) block[i] = i;
+  const data = Buffer.concat(Array(32768).fill(block));
+  zlib.gzipSync(data, { level: 6 });
+} else if (bench === 'json_parse') {
+  const arr = Array.from({length: 20000}, (_, i) => ({id:i, name:'verdix'+i, ok:i%2===0}));
+  JSON.parse(JSON.stringify(arr));
+} else if (bench === 'regex_count') {
+  const texto = 'NEON Verdix 1234 xyz\n'.repeat(100000);
+  (texto.match(/[A-Z]{3,}\s\d+/g) || []).length;
+} else if (bench === 'mem_alloc') {
+  const buf = Buffer.alloc(64 << 20);
+  for (let i = 0; i < buf.length; i += 4096) buf[i] = 1;
+} else if (bench === 'pi_monte_carlo') {
+  let seed = 42, dentro = 0;
+  const rnd = () => { seed = (seed * 1103515245 + 12345) & 0x7fffffff; return seed / 0x80000000; };
+  for (let i = 0; i < 500000; i++) if (rnd()**2 + rnd()**2 <= 1) dentro++;
+} else if (bench === 'fib_rec') fibRec(30);
 else if (bench === 'fib_iter') fibIter(90);
 else if (bench === 'matrix') matrixMul(100);
 else if (bench === 'sieve') sieve(2000000);
