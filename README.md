@@ -24,19 +24,19 @@ python3 bench.py history     # últimas corridas
 python3 -m pytest tests/ -q  # 7 pruebas
 ```
 
-## Resultados medidos (19-nov-2026, Celeron 4205U · 2 núcleos · 3.7 GB)
+## Resultados medidos (19-nov-2026, CPU ociosa tras pausar NOX-1, Celeron 4205U · 2 núcleos · 3.7 GB)
 
 | Benchmark | C | JS (Node) | Python |
 |---|---|---|---|
-| quicksort 40k | 13.9 ms | 190.0 ms | 398.1 ms |
-| mergesort 40k | 17.6 ms | 146.6 ms | 401.1 ms |
-| insertionsort 2k | 1.0 ms | 15.4 ms | 390.8 ms |
-| bubblesort 800 | 5.2 ms | 17.7 ms | 106.4 ms |
-| binary_search (×1000) | 0.3 ms | 48.8 ms | 39.7 ms |
-| linear_search (×200) | 60.3 ms | 313.9 ms | 6141.4 ms |
-| fib_rec(30) | 9.4 ms | 39.6 ms | 599.3 ms |
-| matrix 100×100 | 2.4 ms | 58.9 ms | 298.7 ms |
-| sieve(2.000.000) | 54.8 ms | 100.0 ms | 437.5 ms |
+| quicksort 40k | 6.3 ms | 55.6 ms | 199.9 ms |
+| mergesort 40k | 6.3 ms | 55.6 ms | 199.9 ms |
+| insertionsort 2k | 0.7 ms | 9.6 ms | 178.3 ms |
+| bubblesort 800 | 2.1 ms | 8.3 ms | 56.8 ms |
+| binary_search (×1000) | 0.4 ms | 18.4 ms | 18.9 ms |
+| linear_search (×200) | 21.7 ms | 119.4 ms | 3368.2 ms |
+| fib_rec(30) | 3.9 ms | 25.1 ms | 264.7 ms |
+| matrix 100×100 | 0.9 ms | 27.2 ms | 125.1 ms |
+| sieve(2.000.000) | 15.0 ms | 36.5 ms | 210.6 ms |
 
 Metodología completa y notas de honestidad en `web/index.html` (sección Metodología).
 
