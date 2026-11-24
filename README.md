@@ -21,7 +21,7 @@ python3 bench.py run         # toda la suite (~80 s en Celeron 4205U)
 python3 bench.py run quicksort sieve --runs 5
 python3 bench.py report      # tabla de resultados
 python3 bench.py history     # últimas corridas
-python3 -m pytest tests/ -q  # 7 pruebas
+python3 -m pytest tests/ -q  # 10 pruebas
 ```
 
 ## Resultados medidos (19-nov-2026, CPU ociosa tras pausar NOX-1, Celeron 4205U · 2 núcleos · 3.7 GB)
@@ -61,6 +61,7 @@ Metodología completa y notas de honestidad en `web/index.html` (sección Metodo
 
 ## Límites conocidos (honestos)
 
+0. `results/latest.json` y `results/algorithms_c/` se versionan a propósito para que el dashboard funcione sin ejecutar nada; `results/results.db` y los binarios generados están ignorados por Git.
 1. Un solo equipo de medición: no comparar entre máquinas sin avisar.
 2. fib_iter(90) es demasiado trivial para sacar conclusión útil (se publica igual).
 3. No hay benchmarks de red/OS/bases de datos/IA en esta fase: requieren servicios o instalaciones extra — se añaden con autorización explícita, sin tocar lo existente.
